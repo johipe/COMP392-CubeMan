@@ -208,10 +208,11 @@ function setupRenderer() {
 // Setup main camera for the scene
 function setupCamera() {
     camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.x = -20;
-    camera.position.y = 25;
-    camera.position.z = 20;
-    camera.lookAt(new Vector3(5, 0, 0));
+    camera.position.x = -30;
+    camera.position.y = 40;
+    camera.position.z = 30;
+    //camera.lookAt(new Vector3(5, 0, 0));
+    camera.lookAt(scene.position);
     console.log("Finished setting up Camera...");
 }
 //# sourceMappingURL=game.js.map
