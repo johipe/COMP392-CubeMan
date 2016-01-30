@@ -4,9 +4,12 @@ var objects;
     // CONTROL CLASS ++++++++++++++++++++++++++++++++++++++++++
     var Control = (function () {
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
-        function Control(mesh) {
-            this.points = new Array();
-            this.mesh = mesh;
+        /* constructor(mesh: Object3D) {
+             this.points = new Array<objects.Point>();
+             this.mesh = mesh;
+         }*/
+        function Control(rotationSpeed) {
+            this.rotationSpeed = rotationSpeed;
         }
         //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
         Control.prototype.clone = function () {

@@ -6,11 +6,18 @@ module objects {
         //PUBLIC INSTANCE VARIABLES +++++++++++++++++++++++++++
         public points: objects.Point[];
         public mesh: Object3D;
+        public rotationSpeed: number;
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
-        constructor(mesh: Object3D) {
+       /* constructor(mesh: Object3D) {
             this.points = new Array<objects.Point>();
             this.mesh = mesh;
-        }
+        }*/
+        
+        constructor(rotationSpeed: number) {
+			this.rotationSpeed = rotationSpeed;
+		}
+        
+        
         
         //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
         public clone(): void {

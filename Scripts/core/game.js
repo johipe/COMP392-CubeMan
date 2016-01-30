@@ -31,6 +31,8 @@ var renderer;
 var camera;
 var axes;
 var cube;
+var cubeGeometry;
+var cubeMaterial;
 var plane;
 var sphere;
 var ambientLight;
@@ -69,11 +71,22 @@ function init() {
     scene.add(spotLight);
     console.log("Added a SpotLight Light to Scene");
     // Call the Custom Mesh function
-    initializeCustomMesh();
+    //initializeCustomMesh();
+    //Add a Cube to the Scene
+    cubeGeometry = new BoxGeometry(4, 4, 4);
+    cubeMaterial = new LambertMaterial({ color: 0xff0000 });
+    cube = new Mesh(cubeGeometry, cubeMaterial);
+    cube.castShadow = true;
+    cube.position.x = 0; //-4 red
+    cube.position.y = 10; //3
+    cube.position.z = 0;
+    scene.add(cube);
+    console.log("Added Cube Primitive to scene...");
     // add controls
     gui = new GUI();
-    control = new Control(customMesh);
-    addControlPoints();
+    //control = new Control(customMesh);
+    control = new Control(0.02);
+    //addControlPoints();
     addControl(control);
     // Add framerate stats
     addStatsObject();
@@ -143,14 +156,16 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 function addControl(controlObject) {
-    gui.add(controlObject, 'clone');
+    gui.add(controlObject, 'rotationSpeed', 0, 0.5);
+    /*gui.add(controlObject, 'clone');
     for (var index = 0; index < 8; index++) {
-        var folder;
+        var folder: GUI;
         folder = gui.addFolder('Vertices ' + (index + 1));
         folder.add(controlObject.points[index], 'x', -10, 10);
         folder.add(controlObject.points[index], 'y', -10, 10);
         folder.add(controlObject.points[index], 'z', -10, 10);
-    }
+        
+    }*/
 }
 function addStatsObject() {
     stats = new Stats();
@@ -163,10 +178,17 @@ function addStatsObject() {
 // Setup main game loop
 function gameLoop() {
     stats.update();
-    vertices = new Array();
-    for (var index = 0; index < 8; index++) {
-        vertices.push(new Vector3(control.points[index].x, control.points[index].y, control.points[index].z));
-    }
+    //animate cube
+    cube.rotation.x += control.rotationSpeed;
+    cube.rotation.y += control.rotationSpeed;
+    cube.rotation.z += control.rotationSpeed;
+    /* vertices = new Array<Vector3>();
+     for (var index = 0; index < 8; index++) {
+         vertices.push(new Vector3(
+             control.points[index].x,
+             control.points[index].y,
+             control.points[index].z));
+     }*/
     // remove our customMesh from the scene and add it every frame 
     scene.remove(scene.getObjectByName("customMesh"));
     createCustomMesh();
