@@ -32,7 +32,9 @@ var camera;
 var axes;
 var cube;
 var cubeGeometry;
+var planeGeometry;
 var cubeMaterial;
+var planeMaterial;
 var plane;
 var sphere;
 var ambientLight;
@@ -56,8 +58,14 @@ function init() {
     scene.add(axes);
     console.log("Added Axis Helper to scene...");
     //Add a Plane to the Scene
-    plane = new gameObject(new PlaneGeometry(60, 40, 1, 1), new LambertMaterial({ color: 0xffffff }), 0, 0, 0);
+    planeGeometry = new PlaneGeometry(60, 30);
+    planeMaterial = new LambertMaterial({ color: 0xFFFFFF });
+    plane = new Mesh(planeGeometry, planeMaterial);
+    plane.receiveShadow = true;
     plane.rotation.x = -0.5 * Math.PI;
+    plane.position.x = 15;
+    plane.position.y = 0;
+    plane.position.z = 0;
     scene.add(plane);
     console.log("Added Plane Primitive to scene...");
     // Add an AmbientLight to the scene
@@ -211,7 +219,7 @@ function setupCamera() {
     camera.position.x = -30;
     camera.position.y = 40;
     camera.position.z = 30;
-    //camera.lookAt(new Vector3(5, 0, 0));
+    // camera.lookAt(new Vector3(5, 0, 0));
     camera.lookAt(scene.position);
     console.log("Finished setting up Camera...");
 }

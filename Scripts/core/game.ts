@@ -36,7 +36,9 @@ var camera: PerspectiveCamera;
 var axes: AxisHelper;
 var cube: Mesh;
 var cubeGeometry: CubeGeometry;
+var planeGeometry: PlaneGeometry;
 var cubeMaterial: LambertMaterial;
+var planeMaterial: LambertMaterial;
 var plane: Mesh;
 var sphere: Mesh;
 var ambientLight: AmbientLight;
@@ -65,12 +67,16 @@ function init() {
     console.log("Added Axis Helper to scene...");
     
     //Add a Plane to the Scene
-    plane = new gameObject(
-        new PlaneGeometry(60, 40, 1, 1),
-        new LambertMaterial({ color: 0xffffff }),
-        0, 0, 0);
+ 	planeGeometry = new PlaneGeometry(60,30;
+	planeMaterial = new LambertMaterial({color:0xFFFFFF});
+	plane = new Mesh(planeGeometry, planeMaterial);
+	plane.receiveShadow = true;
+	
+	plane.rotation.x = -0.5 * Math.PI;
+    plane.position.x = 15;
+	plane.position.y = 0;
+    plane.position.z = 0;
 
-    plane.rotation.x = -0.5 * Math.PI;
 
     scene.add(plane);
     console.log("Added Plane Primitive to scene...");
@@ -252,9 +258,10 @@ function setupRenderer(): void {
 // Setup main camera for the scene
 function setupCamera(): void {
     camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.x = -20;
-    camera.position.y = 25;
-    camera.position.z = 20;
-    camera.lookAt(new Vector3(5, 0, 0));
+    camera.position.x = -30;
+    camera.position.y = 40;
+    camera.position.z = 30;
+   // camera.lookAt(new Vector3(5, 0, 0));
+   camera.lookAt(scene.position);
     console.log("Finished setting up Camera...");
 }
