@@ -50,7 +50,7 @@ function init() {
     setupRenderer(); // setup the default renderer
     setupCamera(); // setup the camera
     // add an axis helper to the scene
-    axes = new AxisHelper(20);
+    axes = new AxisHelper(10);
     scene.add(axes);
     console.log("Added Axis Helper to scene...");
     //Add a Plane to the Scene
