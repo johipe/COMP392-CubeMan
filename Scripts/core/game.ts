@@ -62,12 +62,16 @@ function init() {
     setupCamera(); // setup the camera
 	
     // add an axis helper to the scene
-    axes = new AxisHelper(10);
+    axes = new AxisHelper(15);
+    axes.position.x = -14.5;
+    axes.position.y = 0;
+    axes.position.z = -14.5;
+    
     scene.add(axes);
     console.log("Added Axis Helper to scene...");
     
     //Add a Plane to the Scene
- 	planeGeometry = new PlaneGeometry(60,30;
+ 	planeGeometry = new PlaneGeometry(60,30);
 	planeMaterial = new LambertMaterial({color:0xFFFFFF});
 	plane = new Mesh(planeGeometry, planeMaterial);
 	plane.receiveShadow = true;
