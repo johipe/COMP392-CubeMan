@@ -35,9 +35,18 @@ var renderer: Renderer;
 var camera: PerspectiveCamera;
 var axes: AxisHelper;
 var cube: Mesh;
+var body:Mesh;
+var rLeg:Mesh;
+var lLeg:Mesh;
 var cubeGeometry: CubeGeometry;
+var bodycubeGeometry: CubeGeometry;
+var legRcubeGeometry: CubeGeometry;
+var legLcubeGeometry: CubeGeometry;
 var planeGeometry: PlaneGeometry;
 var cubeMaterial: LambertMaterial;
+var bodycubeMaterial: LambertMaterial;
+var legRcubeMaterial: LambertMaterial;
+var legLcubeMaterial: LambertMaterial;
 var planeMaterial: LambertMaterial;
 var plane: Mesh;
 var sphere: Mesh;
@@ -101,6 +110,49 @@ function init() {
     // Call the Custom Mesh function
     //initializeCustomMesh();
     
+    //Add the body Cube to the scene
+    bodycubeGeometry = new CubeGeometry(4.792, 7.372, 7.362);
+    bodycubeMaterial = new LambertMaterial({color:0x00ff00});
+    body = new Mesh(bodycubeGeometry, bodycubeMaterial);
+    body.castShadow = true;
+    body.receiveShadow = true;
+    
+    body.position.x = 0.52;
+    body.position.y= 11.22;
+    body.position.z = -0.47;
+    
+    scene.add(body);
+    console.log("Added body cube to the scene");
+    
+    //Add the right leg Cube to the scene
+    legRcubeGeometry = new CubeGeometry(2.240, 7.362, 2.248);
+    legRcubeMaterial = new LambertMaterial({color:0x00ff00});
+    rLeg = new Mesh(legRcubeGeometry, legRcubeMaterial);
+    rLeg.castShadow = true;
+    rLeg.receiveShadow = true;
+    
+    rLeg.position.x = 0.35;
+    rLeg.position.y= 4.170;
+    rLeg.position.z = -2.055;
+    
+    scene.add(rLeg);
+    console.log("Added body cube to the scene");
+    
+    //Add the left leg Cube to the scene
+    legLcubeGeometry = new CubeGeometry(2.240, 7.362, 2.248);
+    legLcubeMaterial = new LambertMaterial({color:0x00ff00});
+    lLeg = new Mesh(legLcubeGeometry, legLcubeMaterial);
+    lLeg.castShadow = true;
+    lLeg.receiveShadow = true;
+    
+    lLeg.position.x = 0.50;
+    lLeg.position.y= 4.170;
+    lLeg.position.z = 0.94;
+    
+    scene.add(lLeg);
+    console.log("Added body cube to the scene");     
+    
+    
     //Add a Cube to the Scene
 	cubeGeometry = new BoxGeometry(4, 4, 4);
 	cubeMaterial = new LambertMaterial({color:0xff0000});
@@ -111,7 +163,7 @@ function init() {
     cube.position.y = 10; //3
     cube.position.z = 0;
     
-	scene.add(cube);
+	//scene.add(cube);
 	console.log("Added Cube Primitive to scene...");
     
     // add controls
@@ -230,6 +282,10 @@ function gameLoop(): void {
     cube.rotation.x += control.rotationSpeed;
     cube.rotation.y += control.rotationSpeed;
     cube.rotation.z += control.rotationSpeed;
+    
+    body.rotation.y += control.rotationSpeed;
+    lLeg.rotation.y += control.rotationSpeed;
+    rLeg.rotation.y += control.rotationSpeed;
 
    /* vertices = new Array<Vector3>();
     for (var index = 0; index < 8; index++) {
