@@ -24,6 +24,7 @@ var Color = THREE.Color;
 var Vector3 = THREE.Vector3;
 var Face3 = THREE.Face3;
 var Point = objects.Point;
+//import GeometryUtils = THREE.GeometryUtils;
 //Custom Game Objects
 var gameObject = objects.gameObject;
 var scene;
@@ -34,15 +35,24 @@ var cube;
 var body;
 var rLeg;
 var lLeg;
+var rArm;
+var lArm;
+var head;
 var cubeGeometry;
 var bodycubeGeometry;
 var legRcubeGeometry;
 var legLcubeGeometry;
+var armLcubeGeometry;
+var armRcubeGeometry;
+var headcubeGeometry;
 var planeGeometry;
 var cubeMaterial;
 var bodycubeMaterial;
 var legRcubeMaterial;
 var legLcubeMaterial;
+var headcubeMaterial;
+var armLcubeMaterial;
+var armRcubeMaterial;
 var planeMaterial;
 var plane;
 var sphere;
@@ -57,6 +67,7 @@ var faces = new Array();
 var customGeometry;
 var customMaterials = new Array();
 var customMesh;
+var human;
 function init() {
     // Instantiate a new Scene object
     scene = new Scene();
@@ -101,7 +112,7 @@ function init() {
     body.position.x = 0.52;
     body.position.y = 11.22;
     body.position.z = -0.47;
-    scene.add(body);
+    //scene.add(body);
     console.log("Added body cube to the scene");
     //Add the right leg Cube to the scene
     legRcubeGeometry = new CubeGeometry(2.240, 7.362, 2.248);
@@ -112,7 +123,9 @@ function init() {
     rLeg.position.x = 0.35;
     rLeg.position.y = 4.170;
     rLeg.position.z = -2.055;
-    scene.add(rLeg);
+    // scene.add(rLeg);
+    // THREE.Geometry.mer
+    //THREE.GeometryUtils.merge(geometry, mesh);
     console.log("Added body cube to the scene");
     //Add the left leg Cube to the scene
     legLcubeGeometry = new CubeGeometry(2.240, 7.362, 2.248);
@@ -123,8 +136,51 @@ function init() {
     lLeg.position.x = 0.50;
     lLeg.position.y = 4.170;
     lLeg.position.z = 0.94;
-    scene.add(lLeg);
+    //scene.add(lLeg);
     console.log("Added body cube to the scene");
+    //Add the left arm Cube to the scene
+    armLcubeGeometry = new CubeGeometry(2.240, 2.248, 6);
+    armLcubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    lArm = new Mesh(armLcubeGeometry, armLcubeMaterial);
+    lArm.castShadow = true;
+    lArm.receiveShadow = true;
+    lArm.position.x = 0.615;
+    lArm.position.y = 12.520;
+    lArm.position.z = 5.901;
+    //scene.add(lLeg);
+    console.log("Added body cube to the scene");
+    //Add the right arm Cube to the scene
+    armRcubeGeometry = new CubeGeometry(2.240, 2.248, 6);
+    armRcubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    rArm = new Mesh(armRcubeGeometry, armRcubeMaterial);
+    rArm.castShadow = true;
+    rArm.receiveShadow = true;
+    rArm.position.x = 0.861;
+    rArm.position.y = 12.520;
+    rArm.position.z = -6.501;
+    //scene.add(lLeg);
+    console.log("Added body cube to the scene");
+    console.log("Added body cube to the scene");
+    //Add the head Cube to the scene
+    headcubeGeometry = new CubeGeometry(3.25, 3.25, 3.25);
+    headcubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    head = new Mesh(headcubeGeometry, headcubeMaterial);
+    head.castShadow = true;
+    head.receiveShadow = true;
+    head.position.x = 0.578;
+    head.position.y = 16.524;
+    head.position.z = -0.375;
+    //scene.add(head);
+    console.log("Added body cube to the scene");
+    //add all the parts to the human object
+    human = new THREE.Object3D(); //create an empty container
+    human.add(rLeg); //add a mesh with geometry to it
+    human.add(body);
+    human.add(lLeg);
+    human.add(lArm);
+    human.add(rArm);
+    human.add(head);
+    scene.add(human); //when done, add the group to the scene
     //Add a Cube to the Scene
     cubeGeometry = new BoxGeometry(4, 4, 4);
     cubeMaterial = new LambertMaterial({ color: 0xff0000 });
@@ -235,9 +291,10 @@ function gameLoop() {
     cube.rotation.x += control.rotationSpeed;
     cube.rotation.y += control.rotationSpeed;
     cube.rotation.z += control.rotationSpeed;
-    body.rotation.y += control.rotationSpeed;
-    lLeg.rotation.y += control.rotationSpeed;
-    rLeg.rotation.y += control.rotationSpeed;
+    //body.rotation.y += control.rotationSpeed;
+    //lLeg.rotation.y += control.rotationSpeed;
+    //rLeg.rotation.y += control.rotationSpeed;
+    human.rotation.y += control.rotationSpeed;
     /* vertices = new Array<Vector3>();
      for (var index = 0; index < 8; index++) {
          vertices.push(new Vector3(
