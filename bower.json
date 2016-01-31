@@ -1,9 +1,9 @@
 {
-  "name": "comp392-threejsboilerplate",
+  "name": "comp392-Assignment1 - Cube Man",
   "authors": [
-    "Tom Tsiliopoulos <tsiliopoulos@hotmail.com>"
+    "Johanna Ponce <jponce4@hmy.centennialcollege.ca>"
   ],
-  "description": "COMP392-ThreeJSBoilerPlate for Advanced Graphics",
+  "description": "COMP392-Assignment 1 for Advanced Graphics",
   "main": "",
   "moduleType": [],
   "license": "MIT",
