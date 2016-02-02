@@ -7,14 +7,16 @@ module objects {
         public points: objects.Point[];
         public mesh: Object3D;
         public rotationSpeed: number;
+        public label: string;
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
        /* constructor(mesh: Object3D) {
             this.points = new Array<objects.Point>();
             this.mesh = mesh;
         }*/
         
-        constructor(rotationSpeed: number) {
+        constructor(rotationSpeed: number, label: string) {
 			this.rotationSpeed = rotationSpeed;
+            this.label = label;
 		}
         
         

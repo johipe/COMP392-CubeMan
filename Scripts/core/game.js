@@ -57,7 +57,9 @@ var planeMaterial;
 var plane;
 var ambientLight;
 var spotLight;
-var control;
+var controlX;
+var controlY;
+var controlZ;
 var gui;
 var stats;
 var step = 0;
@@ -97,7 +99,7 @@ function init() {
     console.log("Added a SpotLight Light to Scene");
     //Add the body Cube to the scene
     bodycubeGeometry = new CubeGeometry(4.792, 7.372, 7.362);
-    bodycubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    bodycubeMaterial = new LambertMaterial({ color: 0xeeb2f7 });
     body = new Mesh(bodycubeGeometry, bodycubeMaterial);
     body.castShadow = true;
     body.receiveShadow = true;
@@ -108,7 +110,7 @@ function init() {
     console.log("Added body cube to the scene");
     //Add the right leg Cube to the scene
     legRcubeGeometry = new CubeGeometry(2.240, 7.362, 2.248);
-    legRcubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    legRcubeMaterial = new LambertMaterial({ color: 0x176de6 });
     rLeg = new Mesh(legRcubeGeometry, legRcubeMaterial);
     rLeg.castShadow = true;
     rLeg.receiveShadow = true;
@@ -119,7 +121,7 @@ function init() {
     console.log("Added right leg cube to the scene");
     //Add the left leg Cube to the scene
     legLcubeGeometry = new CubeGeometry(2.240, 7.362, 2.248);
-    legLcubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    legLcubeMaterial = new LambertMaterial({ color: 0x176de6 });
     lLeg = new Mesh(legLcubeGeometry, legLcubeMaterial);
     lLeg.castShadow = true;
     lLeg.receiveShadow = true;
@@ -130,7 +132,7 @@ function init() {
     console.log("Added left leg cube to the scene");
     //Add the left arm Cube to the scene
     armLcubeGeometry = new CubeGeometry(2.240, 2.248, 6);
-    armLcubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    armLcubeMaterial = new LambertMaterial({ color: 0xe617df });
     lArm = new Mesh(armLcubeGeometry, armLcubeMaterial);
     lArm.castShadow = true;
     lArm.receiveShadow = true;
@@ -141,7 +143,7 @@ function init() {
     console.log("Added left arm cube to the scene");
     //Add the right arm Cube to the scene
     armRcubeGeometry = new CubeGeometry(2.240, 2.248, 6);
-    armRcubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    armRcubeMaterial = new LambertMaterial({ color: 0xe617df }); // FFDAB9
     rArm = new Mesh(armRcubeGeometry, armRcubeMaterial);
     rArm.castShadow = true;
     rArm.receiveShadow = true;
@@ -152,7 +154,7 @@ function init() {
     console.log("Added right arm cube to the scene");
     //Add the head Cube to the scene
     headcubeGeometry = new CubeGeometry(3.25, 3.25, 3.25);
-    headcubeMaterial = new LambertMaterial({ color: 0x00ff00 });
+    headcubeMaterial = new LambertMaterial({ color: 238206179 });
     head = new Mesh(headcubeGeometry, headcubeMaterial);
     head.castShadow = true;
     head.receiveShadow = true;
@@ -182,10 +184,16 @@ function init() {
     console.log("Added Cube Primitive to scene...");
     // add controls
     gui = new GUI();
+    var folder;
     //control = new Control(customMesh);
-    control = new Control(0.02);
+    controlX = new Control(0, 'X Rotation');
+    console.log(controlX.label);
+    controlY = new Control(0, 'Y Rotation');
+    controlZ = new Control(0, 'Z Rotation');
     //addControlPoints();
-    addControl(control);
+    addControl(controlX);
+    addControl(controlY);
+    addControl(controlZ);
     // Add framerate stats
     addStatsObject();
     console.log("Added Stats to scene...");
@@ -199,7 +207,13 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 function addControl(controlObject) {
-    gui.add(controlObject, 'rotationSpeed', 0, 0.5);
+    // gui.add(controlObject, 'puta', 0, 0.5);
+    var f1 = gui.addFolder(controlObject.label);
+    f1.add(controlObject, 'rotationSpeed', 0, 0.5);
+    //gui.add(controlObject,'rotationSpeed', 0, 0.5);
+    //gui.add(controlObject, 'hola');
+    //gui.add(controlObject, 'rotationSpeedY', 0, 0.5);
+    //gui.add(controlObject, 'rotationSpeedZ', 0, 0.5);
     /*gui.add(controlObject, 'clone');
     for (var index = 0; index < 8; index++) {
         var folder: GUI;
@@ -222,9 +236,9 @@ function addStatsObject() {
 function gameLoop() {
     stats.update();
     //animate human
-    human.rotation.y += control.rotationSpeed;
-    //human.rotation.x += control.rotationSpeed;
-    //human.rotation.z += control.rotationSpeed;
+    human.rotation.x += controlX.rotationSpeed;
+    human.rotation.y += controlY.rotationSpeed;
+    human.rotation.z += controlZ.rotationSpeed;
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
     // render the scene

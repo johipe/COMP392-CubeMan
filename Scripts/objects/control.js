@@ -8,8 +8,9 @@ var objects;
              this.points = new Array<objects.Point>();
              this.mesh = mesh;
          }*/
-        function Control(rotationSpeed) {
+        function Control(rotationSpeed, label) {
             this.rotationSpeed = rotationSpeed;
+            this.label = label;
         }
         //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
         Control.prototype.clone = function () {
