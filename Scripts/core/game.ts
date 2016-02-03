@@ -61,13 +61,16 @@ var planeMaterial: LambertMaterial;
 var plane: Mesh;
 var ambientLight: AmbientLight;
 var spotLight: SpotLight;
-var controlX: Control;
+var control: Control;
 var controlY: Control;
 var controlZ: Control;
 var gui: GUI;
 var stats: Stats;
 var step: number = 0;
 var human;
+var sphereColorA;
+
+var parameters;
 
 function init() {
     // Instantiate a new Scene object
@@ -223,17 +226,50 @@ function init() {
     
     // add controls
     gui = new GUI();
-    var folder
+    //var folder
     //control = new Control(customMesh);
-    controlX = new Control(0, 'X Rotation');
-    console.log(controlX.label);
-    controlY = new Control(0, 'Y Rotation');
-    controlZ = new Control(0, 'Z Rotation');
+    
+                    //control = new Control(0, 0, 0);
+                    //body #906c96
+                    //body #906c96
+                    control = new Control(0, 0, 0, "#37bae1", "#cc9ad4", "#e13ddb", "#810d7d", "#2f74d4", "#0E4188" );
+                    
+                    
+                    //head
+                    //body #906c96
+                    //arms #810d7d
+                    //legs #0E4188
+                    
+                    
+                    
+    //controlY = new Control(0, 'Y Rotation');
+    //controlZ = new Control(0, 'Z Rotation');
     
     //addControlPoints();
-    addControl(controlX);
-    addControl(controlY);
-    addControl(controlZ);
+    addControl(control);
+    //addControl(controlY);
+    //addControl(controlZ);
+    
+    //control = new Control(0,0,0);
+   // gui.add(controlX, 'clone');
+   //head.material.setValues({color: 0xcc9900});
+   //head.material.setValues({color: gui.addColor(head.material,'color')});
+   //parameters = {
+       
+		//colorA: "#000033", // color (change "#" to "0x")
+	//	colorB: "#ffff00", // color (change "#" to "0x")
+       
+   //}
+   
+   
+   
+	           //sphereColorA = gui.addColor( parameters, 'colorA' ).name('Color (Diffuse)').listen();
+               
+    // sphereColorA = gui.addColor( control, 'colorA').name('Head Color:');
+	//sphereColorA.onChange(function(value) // onFinishChange
+	//{   sphereColorA.colorA( value.replace("#", "0x") );   });
+   
+   //gui.addColor(head.material,'color');
     
 
     // Add framerate stats
@@ -246,7 +282,29 @@ function init() {
     window.addEventListener('resize', onResize, false);
 }
 
-
+function updateCubes()
+{
+   // var value = parameters.material;
+    //var newMaterial;
+    //newMaterial = new LambertMaterial({color:0x000000});
+    
+    //head.material = newMaterial;
+    //head.material.color.setHex(parameters.color.replace("#",'0x'));
+    
+   //head.material.setValues({color: parameters.colorA}); 
+    
+      head.material.setValues({color: control.colorHead}); 
+      body.material.setValues({color: control.colorBody}); 
+      
+      rArm.material.setValues({color: control.colorRightArm}); 
+      lArm.material.setValues({color: control.colorLeftArm}); 
+      
+      rLeg.material.setValues({color: control.colorRightLeg}); 
+      lLeg.material.setValues({color: control.colorLeftLeg}); 
+    //head.material.setValues({color: parameters.colorA.replace("#","0x")});
+   // console.log("updating cubes" + parameters.colorA);
+    
+}
 
 function onResize(): void {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -256,9 +314,33 @@ function onResize(): void {
 
 function addControl(controlObject: Control): void {
        // gui.add(controlObject, 'puta', 0, 0.5);
-        var f1 = gui.addFolder(controlObject.label);
-        f1.add(controlObject, 'rotationSpeed', 0, 0.5)
+        var rotationFolder = gui.addFolder('Rotation Control');
+       // tempFolder.add(controlObject, 'rotationSpeed', 0, 0.5)
+        rotationFolder.add(controlObject, 'x_rotationSpeed', 0, 0.5).listen();
+        rotationFolder.add(controlObject, 'y_rotationSpeed', 0, 0.5).listen();
+        rotationFolder.add(controlObject, 'z_rotationSpeed', 0, 0.5).listen();
+        rotationFolder.add(controlObject, 'resetPosition').name('Reset ');
+        rotationFolder.open();
         
+        
+        var colorFolder = gui.addFolder('Color Control');
+        colorFolder.addColor(controlObject, 'colorHead').name('Head Color').listen();
+        colorFolder.addColor(controlObject, 'colorBody').name('Body Color').listen();
+        
+        colorFolder.addColor(controlObject, 'colorRightArm').name('Right Arm Color').listen();
+        colorFolder.addColor(controlObject, 'colorLeftArm').name('Left Arm Color').listen();
+        
+        colorFolder.addColor(controlObject, 'colorRightLeg').name('Right Leg Color').listen();
+        colorFolder.addColor(controlObject, 'colorLeftLeg').name('Left Leg Color').listen();
+        
+        colorFolder.add(controlObject, 'randomColors').name('Random Colors');
+        colorFolder.add(controlObject, 'resetColours').name('Reset Colors');
+        colorFolder.open();
+        
+       //Listen for variables changes outside of the GUI. 
+       //Ref: http://dat-gui.googlecode.com/git-history/561b4a1411ed13b37be8ff974174d46b1c09e843/index.html
+        
+     //   ui.addColor( control, 'colorA').name('Head Color:');
     	//gui.add(controlObject,'rotationSpeed', 0, 0.5);
         //gui.add(controlObject, 'hola');
         //gui.add(controlObject, 'rotationSpeedY', 0, 0.5);
@@ -288,15 +370,17 @@ function gameLoop(): void {
     stats.update();
     
         //animate human
-   human.rotation.x += controlX.rotationSpeed;
-    human.rotation.y += controlY.rotationSpeed;
-    human.rotation.z += controlZ.rotationSpeed;
+   human.rotation.x += control.x_rotationSpeed;
+    human.rotation.y += control.y_rotationSpeed;
+    human.rotation.z += control.z_rotationSpeed;
 
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
 	
     // render the scene
     renderer.render(scene, camera);
+    
+    updateCubes();
 }
 
 // Setup default renderer
