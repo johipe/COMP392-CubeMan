@@ -1,7 +1,7 @@
-1; //Source File: Game.ts 
+1; //Source File: Control.ts 
 2; //Author: Johanna Ponce
 3; //Last Modified Date: Feb, 05, 2016 
-4; //Last Modified by: SJohanna Ponce
+4; //Last Modified by: Johanna Ponce
 5; //GUI Controller for the humanoid Character
 7; //Revision History:
 /// <reference path="../../typings/tsd.d.ts"/>

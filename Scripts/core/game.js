@@ -1,3 +1,9 @@
+1; //Source File: Game.ts 
+2; //Author: Johanna Ponce
+3; //Last Modified Date: Feb, 05, 2016 
+4; //Last Modified by: Johanna Ponce
+5; //Main scene setup and controller for the humanoid character. Assigment 1 for Advanced Graphics 
+7; //Revision History:
 /// <reference path="_reference.ts"/>
 // MAIN GAME FILE
 // THREEJS Aliases
@@ -17,8 +23,6 @@ var AmbientLight = THREE.AmbientLight;
 var Control = objects.Control;
 var GUI = dat.GUI;
 var Color = THREE.Color;
-//Custom Game Objects
-var gameObject = objects.gameObject;
 var scene;
 var renderer;
 var camera;
