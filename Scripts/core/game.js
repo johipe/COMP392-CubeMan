@@ -4,14 +4,10 @@
 var Scene = THREE.Scene;
 var Renderer = THREE.WebGLRenderer;
 var PerspectiveCamera = THREE.PerspectiveCamera;
-var BoxGeometry = THREE.BoxGeometry;
 var CubeGeometry = THREE.CubeGeometry;
 var PlaneGeometry = THREE.PlaneGeometry;
-var SphereGeometry = THREE.SphereGeometry;
-var Geometry = THREE.Geometry;
 var AxisHelper = THREE.AxisHelper;
 var LambertMaterial = THREE.MeshLambertMaterial;
-var MeshBasicMaterial = THREE.MeshBasicMaterial;
 var Material = THREE.Material;
 var Mesh = THREE.Mesh;
 var Object3D = THREE.Object3D;
@@ -21,24 +17,18 @@ var AmbientLight = THREE.AmbientLight;
 var Control = objects.Control;
 var GUI = dat.GUI;
 var Color = THREE.Color;
-var Vector3 = THREE.Vector3;
-var Face3 = THREE.Face3;
-var Point = objects.Point;
-//import GeometryUtils = THREE.GeometryUtils;
 //Custom Game Objects
 var gameObject = objects.gameObject;
 var scene;
 var renderer;
 var camera;
 var axes;
-var cube;
 var body;
 var rLeg;
 var lLeg;
 var rArm;
 var lArm;
 var head;
-var cubeGeometry;
 var bodycubeGeometry;
 var legRcubeGeometry;
 var legLcubeGeometry;
@@ -58,14 +48,9 @@ var plane;
 var ambientLight;
 var spotLight;
 var control;
-var controlY;
-var controlZ;
 var gui;
 var stats;
-var step = 0;
 var human;
-var sphereColorA;
-var parameters;
 function init() {
     // Instantiate a new Scene object
     scene = new Scene();
@@ -174,47 +159,11 @@ function init() {
     human.add(rArm);
     human.add(head);
     scene.add(human); //when done, add the group to the scene
-    //Add a Cube to the Scene
-    cubeGeometry = new BoxGeometry(4, 4, 4);
-    cubeMaterial = new LambertMaterial({ color: 0xff0000 });
-    cube = new Mesh(cubeGeometry, cubeMaterial);
-    cube.castShadow = true;
-    cube.position.x = 0; //-4 red
-    cube.position.y = 10; //3
-    cube.position.z = 0;
-    //scene.add(cube);
-    console.log("Added Cube Primitive to scene...");
-    // add controls
+    console.log("Added Humanoid character to scene...");
     gui = new GUI();
-    //var folder
-    //control = new Control(customMesh);
-    //control = new Control(0, 0, 0);
-    //body #906c96
-    //body #906c96
-    control = new Control(0, 0, 0, "#37bae1", "#cc9ad4", "#e13ddb", "#810d7d", "#2f74d4", "#0E4188");
-    //head
-    //body #906c96
-    //arms #810d7d
-    //legs #0E4188
-    //controlY = new Control(0, 'Y Rotation');
-    //controlZ = new Control(0, 'Z Rotation');
-    //addControlPoints();
+    // add controls
+    control = new Control(0, 0, 0, "#37bae1", "#cc9ad4", "#e13ddb", "#e13ddb", "#2f74d4", "#2f74d4");
     addControl(control);
-    //addControl(controlY);
-    //addControl(controlZ);
-    //control = new Control(0,0,0);
-    // gui.add(controlX, 'clone');
-    //head.material.setValues({color: 0xcc9900});
-    //head.material.setValues({color: gui.addColor(head.material,'color')});
-    //parameters = {
-    //colorA: "#000033", // color (change "#" to "0x")
-    //	colorB: "#ffff00", // color (change "#" to "0x")
-    //}
-    //sphereColorA = gui.addColor( parameters, 'colorA' ).name('Color (Diffuse)').listen();
-    // sphereColorA = gui.addColor( control, 'colorA').name('Head Color:');
-    //sphereColorA.onChange(function(value) // onFinishChange
-    //{   sphereColorA.colorA( value.replace("#", "0x") );   });
-    //gui.addColor(head.material,'color');
     // Add framerate stats
     addStatsObject();
     console.log("Added Stats to scene...");
@@ -223,20 +172,12 @@ function init() {
     window.addEventListener('resize', onResize, false);
 }
 function updateCubes() {
-    // var value = parameters.material;
-    //var newMaterial;
-    //newMaterial = new LambertMaterial({color:0x000000});
-    //head.material = newMaterial;
-    //head.material.color.setHex(parameters.color.replace("#",'0x'));
-    //head.material.setValues({color: parameters.colorA}); 
     head.material.setValues({ color: control.colorHead });
     body.material.setValues({ color: control.colorBody });
     rArm.material.setValues({ color: control.colorRightArm });
     lArm.material.setValues({ color: control.colorLeftArm });
     rLeg.material.setValues({ color: control.colorRightLeg });
     lLeg.material.setValues({ color: control.colorLeftLeg });
-    //head.material.setValues({color: parameters.colorA.replace("#","0x")});
-    // console.log("updating cubes" + parameters.colorA);
 }
 function onResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -244,13 +185,11 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 function addControl(controlObject) {
-    // gui.add(controlObject, 'puta', 0, 0.5);
     var rotationFolder = gui.addFolder('Rotation Control');
-    // tempFolder.add(controlObject, 'rotationSpeed', 0, 0.5)
     rotationFolder.add(controlObject, 'x_rotationSpeed', 0, 0.5).listen();
     rotationFolder.add(controlObject, 'y_rotationSpeed', 0, 0.5).listen();
     rotationFolder.add(controlObject, 'z_rotationSpeed', 0, 0.5).listen();
-    rotationFolder.add(controlObject, 'resetPosition').name('Reset ');
+    rotationFolder.add(controlObject, 'resetRotation').name('Reset ');
     rotationFolder.open();
     var colorFolder = gui.addFolder('Color Control');
     colorFolder.addColor(controlObject, 'colorHead').name('Head Color').listen();
@@ -263,21 +202,7 @@ function addControl(controlObject) {
     colorFolder.add(controlObject, 'resetColours').name('Reset Colors');
     colorFolder.open();
     //Listen for variables changes outside of the GUI. 
-    //Ref: http://dat-gui.googlecode.com/git-history/561b4a1411ed13b37be8ff974174d46b1c09e843/index.html
-    //   ui.addColor( control, 'colorA').name('Head Color:');
-    //gui.add(controlObject,'rotationSpeed', 0, 0.5);
-    //gui.add(controlObject, 'hola');
-    //gui.add(controlObject, 'rotationSpeedY', 0, 0.5);
-    //gui.add(controlObject, 'rotationSpeedZ', 0, 0.5);
-    /*gui.add(controlObject, 'clone');
-    for (var index = 0; index < 8; index++) {
-        var folder: GUI;
-        folder = gui.addFolder('Vertices ' + (index + 1));
-        folder.add(controlObject.points[index], 'x', -10, 10);
-        folder.add(controlObject.points[index], 'y', -10, 10);
-        folder.add(controlObject.points[index], 'z', -10, 10);
-        
-    }*/
+    //Ref: http://dat-gui.googlecode.com/git-history/561b4a1411ed13b37be8ff974174d46b1c09e843/index.html        
 }
 function addStatsObject() {
     stats = new Stats();
@@ -314,7 +239,6 @@ function setupCamera() {
     camera.position.x = -30;
     camera.position.y = 40;
     camera.position.z = 30;
-    // camera.lookAt(new Vector3(5, 0, 0));
     camera.lookAt(scene.position);
     console.log("Finished setting up Camera...");
 }
