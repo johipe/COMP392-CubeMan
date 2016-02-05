@@ -3,8 +3,6 @@
 3 //Last Modified Date: Feb, 05, 2016 
 4 //Last Modified by: Johanna Ponce
 5 //GUI Controller for the humanoid Character
-7 //Revision History:
-
 
 /// <reference path="../../typings/tsd.d.ts"/>
 
